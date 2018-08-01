@@ -21,6 +21,7 @@ app.post('/api/:id', function(req, res){
 			return
 		}
 	});
+	console.log("Survey Recieved")
 })
 
 app.listen(3000, () => console.log('App listening on port 3000!'))
