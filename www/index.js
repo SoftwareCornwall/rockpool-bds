@@ -13,7 +13,7 @@ var species = [
 ]
 
 function submit_onClick() {
-	postData("/submit.php", "species=" + foundSpecies.join(","));
+	postData("/", "species=" + foundSpecies.join(","));
 }
 
 function species_onClick(id) {

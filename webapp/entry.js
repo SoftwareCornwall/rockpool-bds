@@ -15,23 +15,23 @@ app.use('*', function(req, res, next) {
    next();
 });
 
-app.post("/submit.php", function(req, res) {
-   console.log("               CRABS: " + req.body.foundSpecies);
+app.post("/", function(req, res) {
+   console.log("     POST DATA " + req.body.species);
    res.send(req.body);
 });
 
 app.get("/:a/:b", function(req, res) {
-    res.sendFile(path.join(__dirname + "/" + req.params.a + "/" + req.params.b));
+    res.sendFile(path.join(__dirname + "/../www/" + req.params.a + "/" + req.params.b));
 });
 
 app.get("/", function(req, res) {
-    res.sendFile(path.join(__dirname + "/index.html"));
+    res.sendFile(path.join(__dirname + "/../www/index.html"));
 });
 
 app.get('/:x', function(req, res) {
-    res.sendFile(path.join(__dirname + "/" + req.params.x));
+    res.sendFile(path.join(__dirname + "/../www/" + req.params.x));
 });
 
 app.listen(3000, () => {
-	console.log("Example app listening on port 3000!");
+	console.log("Listening on port 3000!");
 });
