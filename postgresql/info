@@ -1,0 +1,7 @@
+login: postgres
+database login: rockpool
+database: rockpool
+password: abcd1234
+tables:
+	+ creatures
+	- surveys
