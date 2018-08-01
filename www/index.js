@@ -1,19 +1,23 @@
-var foundSpecies = []
-
-var species = [
+const postTarget = "http://10.24.0.206:3000/api/0";
+const species = [
 	["Common Crab", "./img/common.png"],
 	["Special Crab", "./img/special.png"],
-	["Big Crab", "./img/common.png"],
-	["Small Crab", "./img/special.png"],
+	["Normal Crab", "./img/common.png"],
 	["Strange Crab", "./img/common.png"],
 	["Final Crab", "./img/common.png"],
+	["Fancy Crab", "./img/special.png"],
+	["Not A Crab", "./img/todd.png"],
+	["cyb3rCrab", "./img/special.png"],
 	["Wayward Crab", "./img/special.png"],
 	["Unruly Crab", "./img/special.png"],
-	["Heretic's Crab", "./img/common.png"]
+	["Heretic's Crab", "./img/common.png"],
+	["🦀 Crab 🦀", "./img/common.png"]
 ]
 
+var foundSpecies = []
+
 function submit_onClick() {
-	postData("/", "species=" + foundSpecies.join(","));
+	postData(postTarget, "found_species=" + foundSpecies.join(","));
 }
 
 function species_onClick(id) {
