@@ -1,3 +1,4 @@
 config.json
 *.sh
 *.sql
+index.js
