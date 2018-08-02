@@ -16,7 +16,7 @@ const species = [
 var foundSpecies = []
 
 function submit_onClick() {
-	const postTarget = "http://10.24.0.206:3000/api/0";
+	const postTarget = "/api/0";
 	postData(postTarget, "found_species=" + foundSpecies.join(","));
 }
 
