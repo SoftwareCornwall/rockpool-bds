@@ -1,4 +1,3 @@
-const postTarget = "http://10.24.0.206:3000/api/0";
 const species = [
 	["Common Crab", "./img/common.png"],
 	["Special Crab", "./img/special.png"],
@@ -17,6 +16,7 @@ const species = [
 var foundSpecies = []
 
 function submit_onClick() {
+	const postTarget = "http://10.24.0.206:3000/api/0";
 	postData(postTarget, "found_species=" + foundSpecies.join(","));
 }
 
@@ -27,7 +27,8 @@ function species_onClick(id) {
 	
 	if (isSelected) {
 		var i = foundSpecies.indexOf(speciesName);
-		if (i > -1) foundSpecies.splice(i, 1);
+		if (i != -1) foundSpecies.splice(i, 1);
+		// If found species contains this species, cut it out of the array.
 	} else {
 		newClass += " selectedSpecies";
 		foundSpecies.push(speciesName);

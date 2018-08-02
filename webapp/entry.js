@@ -1,4 +1,3 @@
-var bodyParser = require("body-parser");
 var express = require("express");
 var path = require("path");
 var util = require('util');
@@ -8,12 +7,6 @@ var app = express();
 
 var logFile = fs.createWriteStream(__dirname + "/server.log", {flags : "w"});
 var port = 3000;
-
-app.use(bodyParser.urlencoded({
-	extended: false
-}));
-
-app.use(bodyParser.json());
 
 app.use('*', function(req, res, next) {
 	var text = req.ip.padEnd(20) + "|" + Date.now() + "|:" + req.originalUrl;
