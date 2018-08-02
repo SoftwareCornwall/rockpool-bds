@@ -1,11 +1,11 @@
-sudo apt-get install -y postgresql-9.6 postgresql-contrib libpq-dev
+sudo apt-get install -y [insert here]
 
 database name: rockpool
 
 To create a table:
 
 CREATE TABLE creatures (
-  id serial PRIMARY KEY,
+  id int AUTO_INCREMENT PRIMARY KEY,
   name varchar (50) NOT NULL,
   added_date date
 );
@@ -29,7 +29,4 @@ INSERT INTO creatures (
 );
 
 To get all data from the table
-SELECT * FROM creatures
-
-
-mongodb://localhost:5432
+SELECT * FROM creatures;
