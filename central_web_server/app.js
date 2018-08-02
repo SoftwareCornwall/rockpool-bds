@@ -8,9 +8,9 @@ app.use(body_parser.urlencoded({extended: true}))
 
 app.use(body_parser.json())
 
-app.get('/', (req, res) => res.send('Hello World!'))
-
 app.use(express.static('ui_files'))
+
+app.get('/', (req, res) => res.sendFile('index.html'))
 
 app.post('/api/:id', function(req, res){
 	res.send()
@@ -21,7 +21,7 @@ app.post('/api/:id', function(req, res){
 			return
 		}
 	});
-	console.log("Survey Recieved")
+	console.log("Survey Recieved: " + species_array.join(", "))
 })
 
 app.listen(3000, () => console.log('App listening on port 3000!'))
