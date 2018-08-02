@@ -45,9 +45,8 @@ function postData(target, data) {
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	
 	http.onreadystatechange = function () {
-		if(http.readyState == 4 && http.status == 200) {
-			console.log(http.responseText);	
-		}
+		var text = "POST Response: readyState = '" + http.readyState + "', status = '" + http.status + "', responseText = '" + http.responseText + "'.";
+		console.log(text);
 	}
 	
 	http.send(data);

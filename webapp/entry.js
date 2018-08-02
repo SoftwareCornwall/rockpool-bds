@@ -7,6 +7,7 @@ var fs = require('fs');
 var app = express();
 
 var logFile = fs.createWriteStream(__dirname + "/server.log", {flags : "w"});
+var port = 3000;
 
 app.use(bodyParser.urlencoded({
 	extended: false
@@ -33,6 +34,6 @@ app.get('/:x', function(req, res) {
     res.sendFile(path.join(__dirname + "/../www/" + req.params.x));
 });
 
-app.listen(3000, () => {
-	console.log("Listening on port 3000!");
+app.listen(port, () => {
+	console.log("Listening on port " + port + ".");
 });
