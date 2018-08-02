@@ -1,17 +1,8 @@
 const express = require('express')
 const app = express()
 
-var fs = require('fs');
 var body_parser = require('body-parser')
-
-function addSurveyResults(results){
-	fs.writeFile("./ui_files/api/array.txt", results.toString(), function(err) {
-		if(err) {
-			console.log(err)
-			return
-		}
-	});
-}
+var addSurveyResults = require('./handle_database.js')
 
 app.use(body_parser.urlencoded({extended: true}))
 
