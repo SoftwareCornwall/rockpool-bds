@@ -25,16 +25,20 @@ function loadSpecies(name, image, parent) {
 	parent.appendChild(species);
 }
 
-function initialise() {
+function loadAllSpeciesFromJSONString(speciesString) {
+	species = JSON.parse(speciesString);
+	
 	var container = document.getElementById("container");
 	
 	for (var i = 0; i < species.length; i++) {
 		loadSpecies(species[i][0], species[i][1], container);
 	}
-	
-	document.getElementById("submit").addEventListener("click", () => submit_onClick());
 }
 
-
+function initialise() {
+	getData("./species.json", loadAllSpeciesFromJSONString);
+		
+	document.getElementById("submit").addEventListener("click", () => submit_onClick());
+}
 
 window.onload = (() => initialise());

@@ -4,6 +4,11 @@ const app = express()
 var fs = require('fs');
 var body_parser = require('body-parser')
 
+app.use('*', function (req, res, next) {
+	console.log(Date.now() + ": " + req.originalUrl);
+	next();
+});
+
 app.use(body_parser.urlencoded({extended: true}))
 
 app.use(body_parser.json())

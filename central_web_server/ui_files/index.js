@@ -1,19 +1,6 @@
-const species = [
-	["Common Crab", "./img/common.png"],
-	["Special Crab", "./img/special.png"],
-	["Normal Crab", "./img/common.png"],
-	["Strange Crab", "./img/common.png"],
-	["Final Crab", "./img/common.png"],
-	["Fancy Crab", "./img/special.png"],
-	["Not A Crab", "./img/todd.png"],
-	["cyb3rCrab", "./img/special.png"],
-	["Wayward Crab", "./img/special.png"],
-	["Unruly Crab", "./img/special.png"],
-	["Heretic's Crab", "./img/common.png"],
-	["🦀 Crab 🦀", "./img/common.png"]
-]
+var species = [];
 
-var foundSpecies = []
+var foundSpecies = [];
 
 function submit_onClick() {
 	const postTarget = "/api/0";
@@ -35,6 +22,17 @@ function species_onClick(id) {
 	}
 	
 	document.getElementById("species-" + id).setAttribute("class", newClass);
+}
+
+function getData(target, loadHandler) {
+	var http = new XMLHttpRequest();
+	
+	const isAsync = true;
+	http.open("GET", target, isAsync);
+	
+	http.setRequestHeader("Content-type", "application/json");
+	http.addEventListener("load", () => loadHandler(http.responseText));
+	http.send();
 }
 
 function postData(target, data) {
