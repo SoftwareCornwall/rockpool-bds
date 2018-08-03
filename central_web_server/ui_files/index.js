@@ -1,9 +1,14 @@
 var species = [];
 var foundSpecies = [];
 
+function logHttpStateChange(http) {
+		var text = "POST Response: readyState = '" + http.readyState + "', status = '" + http.status + "'.";
+		console.log(text);
+}
+
 function submit_onClick() {
 	const postTarget = "/api/0";
-	postData(postTarget, "found_species=" + foundSpecies.join(","));
+	postData(postTarget, logHttpStateChange, "found_species=" + foundSpecies.join(","));
 }
 
 function species_onClick(id) {
@@ -23,29 +28,47 @@ function species_onClick(id) {
 	document.getElementById("species-" + id).setAttribute("class", newClass);
 }
 
-function getData(target, loadHandler) {
-	var http = new XMLHttpRequest();
+function loadSpecies(name, image, container) {
+	var speciesId = container.children.length;
 	
-	const isAsync = true;
-	http.open("GET", target, isAsync);
+	var species = createHTMLElement({
+		tag: "div",
+		parent: container,
+		events: {
+			"click": (() => species_onClick(speciesId))
+		},
+		attributes: {
+			class: "species",
+			id: "species-" + speciesId
+		}
+	});
 	
-	http.setRequestHeader("Content-type", "application/json");
-	http.addEventListener("load", () => loadHandler(http.responseText));
-	http.send();
+	createHTMLElement({
+		tag: "span",
+		parent: species,
+		text: name
+	});
+	
+	createHTMLElement({
+		tag: "img",
+		parent: species,
+		attributes: { src: image }
+	});
 }
 
-function postData(target, data) {
-	var http = new XMLHttpRequest();
+function loadAllSpeciesFromJSONString(speciesString) {
+	species = JSON.parse(speciesString);
 	
-	const isAsync = true;
-	http.open("POST", target, isAsync);
+	var container = document.getElementById("container");
 	
-	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	
-	http.onreadystatechange = function () {
-		var text = "POST Response: readyState = '" + http.readyState + "', status = '" + http.status + "', responseText = '" + http.responseText + "'.";
-		console.log(text);
+	for (var i = 0; i < species.length; i++) {
+		loadSpecies(species[i].name, species[i].image, container);
 	}
-	
-	http.send(data);
 }
+
+function initialise() {	
+	getData("./species.json", loadAllSpeciesFromJSONString);
+	document.getElementById("submit").addEventListener("click", () => submit_onClick());
+}
+
+window.onload = (() => initialise());
