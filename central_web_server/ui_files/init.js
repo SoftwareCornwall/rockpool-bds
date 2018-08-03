@@ -61,7 +61,7 @@ function loadAllSpeciesFromJSONString(speciesString) {
 	var container = document.getElementById("container");
 	
 	for (var i = 0; i < species.length; i++) {
-		loadSpecies(species[i][0], species[i][1], container);
+		loadSpecies(species[i].name, species[i].image, container);
 	}
 }
 
