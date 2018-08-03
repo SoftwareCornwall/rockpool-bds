@@ -1,11 +1,19 @@
-var fs = require('fs');
+const mysql = require('mysql');
 
-function addSurveyResults(results){
-	fs.writeFile("./ui_files/api/array.txt", results.toString(), function(err) {
-		if(err) {
-			console.log(err)
-			return
-		}
-	});
+const config = require("../database/config.json");
+
+var addSurveyResults = async function(results) {
+	var connection = mysql.createConnection(config.connection);
+	connection.connect();
+	
+	let queries = [];
+	for (let item of results) {
+		queries.push( "(" + connection.escape(item) + ")" );
+	}
+	
+	let response = await connection.query('INSERT INTO survey_results (species) VALUES ' + queries.join(","));
+	//console.log(response);
+	connection.end();
 }
-module.exports = addSurveyResults
+
+module.exports = addSurveyResults;
