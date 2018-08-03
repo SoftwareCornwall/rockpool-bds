@@ -1,0 +1,6 @@
+creatures- by family of creature? e.g. crab
+then we need the specific type, so the species. e.g. edible crab (????)
+
+chmod +x restart.sh
+
+mysql -u rockpool -p
