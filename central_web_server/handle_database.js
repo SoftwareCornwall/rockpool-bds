@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const config = require("../database/config.json");
 
 var addSurveyResults = async function(results) {
-	var connection = mysql.createConnection(config.connection);
+	let connection = mysql.createConnection(config.connection);
 	connection.connect();
 	
 	let queries = [];
