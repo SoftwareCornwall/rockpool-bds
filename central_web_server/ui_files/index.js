@@ -1,5 +1,4 @@
 var species = [];
-
 var foundSpecies = [];
 
 function submit_onClick() {
@@ -15,7 +14,7 @@ function species_onClick(id) {
 	if (isSelected) {
 		var i = foundSpecies.indexOf(speciesName);
 		if (i != -1) foundSpecies.splice(i, 1);
-		// If found species contains this species, cut it out of the array.
+		// If foundSpecies contains this species, cut it out of the array.
 	} else {
 		newClass += " selectedSpecies";
 		foundSpecies.push(speciesName);

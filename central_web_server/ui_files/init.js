@@ -1,28 +1,58 @@
-function createHTMLElement(type, attributes) {
-	var element = document.createElement(type);
-	for (var i = 0; i < attributes.length; i++)
-		element.setAttribute(attributes[i][0], attributes[i][1]);
+function createHTMLElement(args) {
+	if (args.tag == undefined) {
+		throw new Error("tag must be defined");
+	}
+	
+	var element = document.createElement(args.tag);
+	
+	if (args.text != undefined)
+		element.innerHTML = args.text;
+	
+	if (args.attributes != undefined) {
+		for (var key in args.attributes) {
+			element.setAttribute(key, args.attributes[key]);
+		}
+	}
+	
+	if (args.events != undefined) {
+		for (var key in args.events) {
+			element.addEventListener(key, args.events[key]);
+		}
+	}
+	
+	if (args.parent == undefined) {
+		document.getElementsByTagName("body")[0].appendChild(element);
+	} else {
+		args.parent.appendChild(element);
+	}
 	
 	return element;
 }
 
-function loadSpecies(name, image, parent) {
-	var speciesId = parent.children.length;
+function loadSpecies(name, image, container) {
+	var speciesId = container.children.length;
 	
-	var species = createHTMLElement("div", [
-		["class", "species"],
-		["id", "species-" + speciesId]
-	]);
-	species.addEventListener("click", () => species_onClick(speciesId));
+	var species = createHTMLElement({
+		tag: "div",
+		parent: container,
+		events: { "click": (() => species_onClick(speciesId)) },
+		attributes: {
+			class: "species",
+			id: "species-" + speciesId
+		}
+	});
 	
-	var span = createHTMLElement("span", []);
-	var img = createHTMLElement("img", [["src", image]]);
-	var text = document.createTextNode(name);
+	createHTMLElement({
+		tag: "span",
+		parent: species,
+		text: name
+	});
 	
-	span.appendChild(text);
-	species.appendChild(span);
-	species.appendChild(img);
-	parent.appendChild(species);
+	createHTMLElement({
+		tag: "img",
+		parent: species,
+		attributes: { src: image }
+	});
 }
 
 function loadAllSpeciesFromJSONString(speciesString) {
@@ -35,9 +65,8 @@ function loadAllSpeciesFromJSONString(speciesString) {
 	}
 }
 
-function initialise() {
+function initialise() {	
 	getData("./species.json", loadAllSpeciesFromJSONString);
-		
 	document.getElementById("submit").addEventListener("click", () => submit_onClick());
 }
 
