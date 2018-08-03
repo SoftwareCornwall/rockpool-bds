@@ -1,32 +1,10 @@
-sudo apt-get install -y [insert here]
+$ sudo apt-get install -y mysql-server
 
-database name: rockpool
+$ sudo mysql -u root 
 
-To create a table:
+> CREATE USER rockpool IDENTIFIED BY 'abcd1234'; 
 
-CREATE TABLE creatures (
-  id int AUTO_INCREMENT PRIMARY KEY,
-  name varchar (50) NOT NULL,
-  added_date date
-);
+> GRANT ALL ON *.* TO 'rockpool';
 
+> exit
 
-To insert into it:
-INSERT INTO creatures (
-  name,
-  added_date
-) VALUES (
-  'crab1',
-  '2018-08-01'
-);
-
-INSERT INTO creatures (
-  name,
-  added_date
-) VALUES (
-  'crab2',
-  '2018-12-02'
-);
-
-To get all data from the table
-SELECT * FROM creatures;
