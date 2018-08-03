@@ -4,6 +4,11 @@ const app = express()
 var body_parser = require('body-parser')
 var addSurveyResults = require('./handle_database.js')
 
+app.use('*', function (req, res, next) {
+	console.log(Date.now() + ": " + req.originalUrl);
+	next();
+});
+
 app.use(body_parser.urlencoded({extended: true}))
 
 app.use(body_parser.json())
