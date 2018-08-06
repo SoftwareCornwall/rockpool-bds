@@ -21,8 +21,8 @@ CREATE TABLE session (
 CREATE TABLE survey (
   id int AUTO_INCREMENT PRIMARY KEY,
   tourist_id_1 varchar(5) NOT NULL,
-  tourist_id_2 varchar(5) NOT NULL,
-  tourist_id_3 varchar(5) NOT NULL,
+  tourist_id_2 varchar(5),
+  tourist_id_3 varchar(5),
   session_id varchar(5) NOT NULL,
   device_id smallint NOT NULL,
   staff_id_reviewer varchar(5) NOT NULL,

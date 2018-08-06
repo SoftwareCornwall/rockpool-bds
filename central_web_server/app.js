@@ -3,7 +3,7 @@ const app = express()
 
 var body_parser = require('body-parser')
 var addSurveyResults = require('./handle_database.js')
-
+/*
 app.use(body_parser.urlencoded({extended: true}))
 
 app.use(body_parser.json())
@@ -20,3 +20,4 @@ app.post('/api/:id', function(req, res){
 })
 
 app.listen(3000, () => console.log('App listening on port 3000!'))
+*/
