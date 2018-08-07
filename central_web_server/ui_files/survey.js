@@ -27,7 +27,7 @@ function submit_onClick() {
 
     console.log(JSON.stringify(submitData));
 
-    const postTarget = "http://10.24.1.69:3000" + "/api/submitSurveyResults";
+    const postTarget = "/api/submitSurveyResults";
     postJSON(postTarget, logHttpStateChange, submitData);
 }
 

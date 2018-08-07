@@ -25,8 +25,10 @@ app.use(express.static('ui_files'));
 
 app.get('/', (req, res) => res.sendFile('index.html'));
 
-app.get('/api/getSpeciesLists', function(req, res) {
-	res.send(JSON.stringify(database.getSpeciesLists()));
+app.get('/api/getSpeciesLists', async function(req, res) {
+	var lists = await database.getSpeciesLists();
+	console.log(lists);
+	res.send(JSON.stringify(lists));
 });
 
 app.post('/api/submitSurveyResults', function(req, res) {

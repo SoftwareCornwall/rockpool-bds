@@ -1,5 +1,6 @@
 const mysql = require('promise-mysql');
 const squel = require('squel');
+const fs = require('fs');
 
 const config = require("../database/config.json");
 
@@ -57,7 +58,7 @@ function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
 
 async function getSpeciesLists() {
   let connection = await mysql.createConnection(config.connection);
-  let getSpecies = await connection.query("getAllDataQuery": "SELECT species.id as species_id, species.name as species_name, species_group.id as species_group_id, species_group.name as species_group_name FROM ((species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id)");
+  let getSpecies = await connection.query("SELECT species.id as species_id, species.name as species_name, species_group.id as species_group_id, species_group.name as species_group_name FROM ((species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id)");
   
   let output = [];
   let structureObj = {};
