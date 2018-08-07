@@ -7,7 +7,7 @@ function submit_onClick() {
 }
 
 function species_onClick(id) {
-	var speciesName = species[id][0];
+	var speciesName = species[id].name;
 	var isSelected = foundSpecies.includes(speciesName);
 	var newClass = "species";
 	
