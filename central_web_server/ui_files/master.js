@@ -16,7 +16,6 @@ function createHTMLElement(args) {
 	
 	if (args.events != undefined) {
 		for (var key in args.events) {
-			console.log(key + " : " + args.events[key]);
 			element.addEventListener(key, args.events[key]);
 		}
 	}
@@ -41,13 +40,14 @@ function getData(target, loadHandler) {
 	http.send();
 }
 
-function postData(target, stateChangeHandler, data) {
+function postJSON(target, stateChangeHandler, json) {
+	var data = JSON.stringify(json);
 	var http = new XMLHttpRequest();
 	
 	const isAsync = true;
 	http.open("POST", target, isAsync);
 	
-	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	http.onreadystatechange = () => stateChangeHandler(http);
+	http.setRequestHeader("Content-type", "application/json");
+	http.onreadystatechange = (() => stateChangeHandler(http));
 	http.send(data);
 }

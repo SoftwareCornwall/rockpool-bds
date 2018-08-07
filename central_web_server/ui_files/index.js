@@ -1,0 +1,131 @@
+const speciesListsURL = "http://10.24.1.69:3000/api/getSpeciesLists";
+
+var speciesLists = [
+	{
+		"species_list_id": 1,
+		"species_list": "crabs",
+		"species": [
+			{"id":1, "name": "crabus minimalus"},
+			{"id":2, "name": "crabus ninjarius"}
+		]
+	},
+	{
+		"species_list_id": 2,
+		"species_list": "fish",
+		"species": [
+			{"id":1, "name": "Swordfishius Maximus"},
+			{"id":2, "name": "Sharkus Terribilis"},
+			{"id":3, "name": "Fishius Naughtius"},
+			{"id":4, "name": "Fishus Cannis"}
+		]
+	},
+	{
+		"species_list_id": 3,
+		"species_list": "wracks",
+		"species": [
+			{"id":1, "name": "Cerebral Wrack"},
+			{"id":2, "name": "Plebius Wrack"},
+			{"id":3, "name": "Pugilus Wrack"}
+		]
+	},
+	{
+		"species_list_id": 4,
+		"species_list": "lost pennies",
+		"species": [
+			{"id":1, "name": "10p"},
+			{"id":2, "name": "20p"},
+			{"id":3, "name": "50p"},
+			{"id":4, "name": "5p"},
+			{"id":5, "name": "1p"},
+			{"id":6, "name": "2p"},
+			{"id":7, "name": "£1"}
+		]
+	}
+];
+
+function handleSpeciesListDownload(result) {
+	var json = JSON.parse(result);
+	var list = document.getElementById("species-list-select");
+	
+	for (var i = 0; i < json.length; i++) {
+		createHTMLElement({
+			tag: "option",
+			parent: list,
+			text: json[i].species_list,
+			attributes: { value: json[i].species_list_id }
+		});
+	}
+}
+
+function isAlphanumeric(phrase) {
+	const legalChars = "1234567890qwertyuiopasdfghjklzxcvbnm";
+	phrase = phrase.toLowerCase();
+	
+	for (var i = 0;i < phrase.length; i++) {
+		if (legalChars.indexOf(phrase[i]) == -1) {
+			// char not found in legalChars.
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+function findInvalidField(sessionId, touristIds) {
+	var isSessionIdValid = ((sessionId.length == 5) && isAlphanumeric(sessionId));
+	if (!isSessionIdValid) {
+		return "sessionId";
+	}
+	
+	const maxTouristCount = 3;
+	var isValidTouristCount = ((touristIds.length > 0) && (touristIds.length <= maxTouristCount));
+	if (!isValidTouristCount)
+		return "touristIds";
+	
+	
+	for (var i = 0; i < touristIds.length; i++) {
+		var isValid = ((touristIds[i].length == 5) && isAlphanumeric(touristIds[i]));
+		if (!isValid) return "touristIds";
+	}
+	
+	return "none";
+}
+
+function continueButton_click() {
+	var sessionId = document.getElementById("session-id-input").value;
+	var speciesListId = document.getElementById("species-list-select").value;
+	
+	var touristIds = [];
+	const noOfTourists = 3;
+	for (let i = 0; i < noOfTourists; i++) {
+		var tourist = document.getElementById("tourist-input-" + i).value;
+		if (tourist != "")
+			touristIds.push(tourist);
+	}
+	
+	var invalidField = findInvalidField(sessionId, touristIds);
+	
+	if (invalidField == "sessionId") {
+		alert("Invalid Session ID");
+		return;
+	} else if (invalidField == "touristIds") {
+		alert("Invalid Tourist IDs");
+		return;
+	}
+
+	window.localStorage.setItem("sessionId", sessionId);
+	window.localStorage.setItem("speciesList", speciesListId);
+	window.localStorage.setItem("touristIds", touristIds);
+	window.localStorage.setItem("species", JSON.stringify(speciesLists));
+	//TODO: only send required data.
+	
+	window.location = "./survey.html";
+}
+
+function initialise() {
+	getData(speciesListsURL, (result) => handleSpeciesListDownload(result));
+	document.getElementById("continue-button").addEventListener("click", continueButton_click);
+	//handleSpeciesListDownload(JSON.stringify(speciesLists));
+}
+
+window.onload = initialise;

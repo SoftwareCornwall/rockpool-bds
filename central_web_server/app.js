@@ -13,14 +13,14 @@ app.use(body_parser.urlencoded({extended: true}))
 
 app.use(body_parser.json())
 
-app.use(express.static('www'))
+app.use(express.static('ui_files'))
 
 app.get('/', (req, res) => res.sendFile('index.html'))
 
 app.post('/api/:id', function(req, res){
 	res.send()
 	var species_array = req.body.found_species.split(",")
-	fs.writeFile("./www/api/array.txt", species_array.toString(), function(err) {
+	fs.writeFile("./ui_files/api/array.txt", species_array.toString(), function(err) {
 		if(err) {
 			console.log(err)
 			return
