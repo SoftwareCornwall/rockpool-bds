@@ -4,3 +4,5 @@ then we need the specific type, so the species. e.g. edible crab (????)
 chmod +x restart.sh
 
 mysql -u rockpool -p
+
+SELECT species.id as species_id, species.name as species_name, species_group.id as species_group_id, species_group.name as species_group_name FROM ((species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id);
