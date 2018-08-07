@@ -87,4 +87,10 @@ async function getSpeciesLists() {
 async function addSurveyResults() {
   
 }
-module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults };
+
+var addSurveyResults_2_Electric_Boogaloo = function(results) {
+	fs.writeFileSync("./ui_files/api/array.txt", JSON.stringify(results));		
+}
+
+
+module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults, addSurveyResults_2_Electric_Boogaloo };

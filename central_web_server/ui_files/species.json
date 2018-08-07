@@ -1,0 +1,15 @@
+[
+	{ "name": "Common Crab",		"image": "./img/common.png" },
+	{ "name": "Special Crab",		"image": "./img/special.png" },
+	{ "name": "Normal Crab",		"image": "./img/common.png" },
+	{ "name": "Cat",				"image": "./img/cat.png" },
+	{ "name": "Strange Crab",		"image": "./img/common.png" },
+	{ "name": "Final Crab",		"image": "./img/common.png" },
+	{ "name": "Fancy Crab",		"image": "./img/special.png" },
+	{ "name": "Not A Crab",		"image": "./img/todd.png" },
+	{ "name": "cyb3rCrab",		"image": "./img/special.png" },
+	{ "name": "Wayward Crab",		"image": "./img/special.png" },
+	{ "name": "Unruly Crab",		"image": "./img/special.png" },
+	{ "name": "Heretic's Crab",	"image": "./img/common.png" },
+	{ "name": "🦀 Crab 🦀",		"image": "./img/common.png" }
+]
