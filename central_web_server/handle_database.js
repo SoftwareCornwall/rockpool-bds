@@ -3,20 +3,6 @@ const squel = require('squel');
 
 const config = require("../database/config.json");
 
-/*var addSurveyResults = async function(surveyResults) {
-  let connection = await mysql.createConnection(config.connection);
-  // connection.connect();
-  
-  let queries = [];
-  for (let item of surveyResults) {
-    queries.push( "(" + connection.escape(item) + ")" );
-  }
-  console.log('INSERT INTO species (name) VALUES ' + queries.join(","));
-  let resp = await connection.query('INSERT INTO species (name) VALUES ' + queries.join(","));
-  //let resp = await connection.query('SELECT * FROM species WHERE id="1"');
-  console.log(resp);
-  connection.end();
-}*/
 let exampleData = [
 	{
 		"species_list_id": 1,
@@ -60,7 +46,7 @@ let exampleData = [
 	}
 ];
 
-async function recursiveData(data) {
+async function addDummyData(data) {
   let connection = await mysql.createConnection(config.connection);
   let groupEntryData = [];
   for (let group of data) {
@@ -109,20 +95,43 @@ function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
     obj[fieldNames[1]] = (retStr ? id.toString() : id);
     output.push(obj);
   }
-  //console.log(output);
   return output;
 }
 
-recursiveData(exampleData);
-/*
-function submitSurveyResultImplementation(connection, result) {
+//addDummyData(exampleData);
+async function getSpeciesLists() {
+  let connection = await mysql.createConnection(config.connection);
+  let getSpecies = await connection.query(config.getAllDataQuery);
+  //console.log(getSpecies);
+  let output = [];
+  let structureObj = {};
+  for (let row of getSpecies) {
+    let exists = false;
+    let group = {};
+    if (!structureObj[row.species_group_id.toString()]) {
+      group.species_list_id = row.species_group_id;
+      group.species_list = row.species_group_name;
+      group.species = [];
+    } else {
+      exists = true;
+      group = structureObj[row.species_group_id.toString()]
+    }
+    group.species.push({
+      id: row.species_id,
+      name: row.species_name
+    });
+    console.log(group);
+    if (!exists) structureObj[row.species_group_id.toString()] = group;
+  }
+  for (let group of Object.keys(structureObj)) {
+    output.push(structureObj[group]);
+  }
+  return output;
 }
 
-async function submitSurveyResult(result) {
-  let connection = await mysql.createConnection(config.connection);
-  submitSurveyResultImplementation(connection, result);
-  connection.end();
-}*/
-
-module.exports = recursiveData;
+async function addSurveyResults() {
+  
+}
+getSpeciesLists();
+module.exports = { addDummyData, getSpeciesLists, addSurveyResults };
 
