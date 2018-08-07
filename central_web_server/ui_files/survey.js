@@ -12,6 +12,18 @@ var listInfo = {};
 
 var foundSpecies = [];
 
+function postJSON(target, stateChangeHandler, json) {
+    var data = JSON.stringify(json);
+    var http = new XMLHttpRequest();
+
+    const isAsync = true;
+    http.open("POST", target, isAsync);
+
+    http.setRequestHeader("Content-type", "application/json");
+    http.onreadystatechange = (() => stateChangeHandler(http));
+    http.send(data);
+}
+
 function logHttpStateChange(http) {
     var text = "POST Response: readyState = '" + http.readyState + "', status = '" + http.status + "', responseText = '" + http.responseText + "'.";
     console.log(text);

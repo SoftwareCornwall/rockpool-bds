@@ -2,6 +2,17 @@
 
 var speciesList = [];
 
+function getData(target, loadHandler) {
+    var http = new XMLHttpRequest();
+
+    const isAsync = true;
+    http.open("GET", target, isAsync);
+
+    http.setRequestHeader("Content-type", "application/json");
+    http.addEventListener("load", () => loadHandler(http.responseText));
+    http.send();
+}
+
 function handleSpeciesListDownload(result) {
     speciesList = JSON.parse(result);
     var list = document.getElementById("species-list-select");
@@ -82,7 +93,7 @@ function continueButton_click() {
 }
 
 function initialise() {
-	const speciesListsURL = "http://10.24.1.69:3000/api/getSpeciesLists";
+    const speciesListsURL = "http://10.24.1.69:3000/api/getSpeciesLists";
     getData(speciesListsURL, (result) => handleSpeciesListDownload(result));
     document.getElementById("continue-button").addEventListener("click", continueButton_click);
     //handleSpeciesListDownload(JSON.stringify(speciesLists));
