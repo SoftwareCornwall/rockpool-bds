@@ -1,0 +1,86 @@
+/*coolors.co/08605f-177e89-598381-5b5d66-a2ad59*/
+
+:root {
+	--background: #08605f;
+	
+	--header-background: #5b5d66;
+	--header-foreground: #ffffff;
+	
+	--species-unselected-background: #177e89;
+	--species-unselected-foreground: #ffffff;
+	--species-selected-background: #a2ad59;
+	--species-selected-foreground: #000000;
+	
+	--submit-unselected-background: #a2ad59;
+	--submit-unselected-foreground: #ffffff;
+	--submit-selected-background: #5b5d66;
+	--submit-selected-foreground: #ffffff;
+}
+
+body {
+	background-color: var(--background);
+	font-family: "helvetica";
+	padding: 0;
+	margin: 0;
+	font-size: 1.6em;
+}
+
+#header {
+	background-color: var(--header-background);
+	color: var(--header-foreground);
+	
+	width: 100%;
+	position: fixed;
+	top: 0;
+	height: 60px;
+	font-weight: bold;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#submit {
+	font-size: 1.6em;
+	color: var(--submit-unselected-foreground);
+	background-color: var(--submit-unselected-background);
+	border-width: 0px;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	height: 60px;
+}
+
+#submit:active {
+	background-color: var(--submit-selected-background);
+	color: var(--submit-selected-foreground);
+}
+
+#container {
+	width: 90%;
+	padding-top: 60px;
+	padding-bottom: 60px;
+}
+
+.species {
+	background-color: var(--species-unselected-background);
+	color: var(--species-unselected-foreground);
+	
+	width: 95%;
+	padding: 2.5%;
+	margin: 5%;
+	
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.selectedSpecies {
+	color: var(--species-selected-foreground);
+	background-color: var(--species-selected-background);
+}
+
+.species img {
+	width: 60px;
+	height: 60px;
+}

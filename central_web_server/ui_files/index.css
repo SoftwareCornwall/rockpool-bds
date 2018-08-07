@@ -1,24 +1,8 @@
-/*coolors.co/08605f-177e89-598381-5b5d66-a2ad59*/
-
-:root {
-	--background: #08605f;
-	
-	--header-background: #5b5d66;
-	--header-foreground: #ffffff;
-	
-	--species-unselected-background: #177e89;
-	--species-unselected-foreground: #ffffff;
-	--species-selected-background: #a2ad59;
-	--species-selected-foreground: #000000;
-	
-	--submit-unselected-background: #a2ad59;
-	--submit-unselected-foreground: #ffffff;
-	--submit-selected-background: #5b5d66;
-	--submit-selected-foreground: #ffffff;
-}
+/* coolors.co/08605f-177e89-598381-5b5d66-a2ad59 */
 
 body {
-	background-color: var(--background);
+	background-color: #08605f;
+	color: #fff;	
 	font-family: "helvetica";
 	padding: 0;
 	margin: 0;
@@ -26,8 +10,8 @@ body {
 }
 
 #header {
-	background-color: var(--header-background);
-	color: var(--header-foreground);
+	background-color: #5b5d66;
+	color: #ffffff;
 	
 	width: 100%;
 	position: fixed;
@@ -40,10 +24,10 @@ body {
 	align-items: center;
 }
 
-#submit {
+#continue-button {
 	font-size: 1.6em;
-	color: var(--submit-unselected-foreground);
-	background-color: var(--submit-unselected-background);
+	color: #ffffff;
+	background-color: #a2ad59;
 	border-width: 0px;
 	width: 100%;
 	position: fixed;
@@ -51,36 +35,28 @@ body {
 	height: 60px;
 }
 
-#submit:active {
-	background-color: var(--submit-selected-background);
-	color: var(--submit-selected-foreground);
+#continue-button:active {
+	background-color: #5b5d66;
+}
+
+#controls {
+	padding: 5%;
+	background-color: #177e89;
+	color: #ffffff;
+	margin: 5%;
+	
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 1fr;
+}
+
+#controls > * {
+	padding: 0;
+	margin: 0;
+	width: 100%;
 }
 
 #container {
-	width: 90%;
 	padding-top: 60px;
 	padding-bottom: 60px;
-}
-
-.species {
-	background-color: var(--species-unselected-background);
-	color: var(--species-unselected-foreground);
-	
-	width: 95%;
-	padding: 2.5%;
-	margin: 5%;
-	
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.selectedSpecies {
-	color: var(--species-selected-foreground);
-	background-color: var(--species-selected-background);
-}
-
-.species img {
-	width: 60px;
-	height: 60px;
 }
