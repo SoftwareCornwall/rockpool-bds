@@ -93,7 +93,7 @@ function continueButton_click() {
 }
 
 function initialise() {
-    const speciesListsURL = "http://10.24.1.69:3000/api/getSpeciesLists";
+    const speciesListsURL = "/api/getSpeciesLists";
     getData(speciesListsURL, (result) => handleSpeciesListDownload(result));
     document.getElementById("continue-button").addEventListener("click", continueButton_click);
     //handleSpeciesListDownload(JSON.stringify(speciesLists));
