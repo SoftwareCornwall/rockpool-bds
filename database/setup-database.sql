@@ -44,3 +44,5 @@ CREATE TABLE species_group_entry (
   species_group_id varchar(5) NOT NULL,
   species_id varchar(5) NOT NULL
 );
+
+
