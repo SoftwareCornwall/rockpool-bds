@@ -1,52 +1,11 @@
 const mysql = require('promise-mysql');
 const squel = require('squel');
 
+const exampleData = require("./ui_files/api/species_lists.json");
 const config = require("../database/config.json");
 
-let exampleData = [
-	{
-		"species_list_id": 1,
-		"species_list": "crabs",
-		"species": [
-		{"id":1, "name": "crabus minimalus"},
-		{"id":2, "name": "crabus ninjarius"}
-		]
-	},
-	{
-		"species_list_id": 2,
-		"species_list": "fish",
-		"species": [
-		{"id":1, "name": "Swordfishius Maximus"},
-		{"id":2, "name": "Sharkus Terribilis"},
-		{"id":3, "name": "Fishius Naughtius"},
-		{"id":4, "name": "Fishus Cannis"}
-		]
-	},
-	{
-		"species_list_id": 3,
-		"species_list": "wracks",
-		"species": [
-		{"id":1, "name": "Cerebral Wrack"},
-		{"id":2, "name": "Plebius Wrack"},
-		{"id":3, "name": "Pugilus Wrack"}
-		]
-	},
-	{
-		"species_list_id": 4,
-		"species_list": "lost pennies",
-		"species": [
-		{"id":1, "name": "10p"},
-		{"id":2, "name": "20p"},
-		{"id":3, "name": "50p"},
-		{"id":4, "name": "5p"},
-		{"id":5, "name": "1p"},
-		{"id":6, "name": "2p"},
-		{"id":7, "name": "£1"}
-		]
-	}
-];
 
-async function addDummyData(data) {
+async function insertSpeciesData(data) {
   let connection = await mysql.createConnection(config.connection);
   let groupEntryData = [];
   for (let group of data) {
@@ -57,36 +16,34 @@ async function addDummyData(data) {
       .into("species_group")
       .setFieldsRows([{name: group.species_list}])
       .toString()
-    //console.log(queryGroup);
-    let groupId = await connection.query(queryGroup);
-    //console.log(groupId.insertId);
-    groupId = groupId.insertId;
+    
+    let groupResult = await connection.query(queryGroup);
+    groupId = groupResult.insertId;
+    
     for (let species of group.species) {
       insertData.push({name: species.name});
     }
+    
     let querySpecies = squel
       .insert()
       .into("species")
       .setFieldsRows(insertData)
       .toString()
-    //console.log(querySpecies);
-    let speciesId = await connection.query(querySpecies);
-    //console.log(speciesId.insertId);
-    speciesId = speciesId.insertId;
     
-    // groupEntryData.push({ species_group_id: groupId, species_id: speciesId });
+    let speciesResult = await connection.query(querySpecies);
+    speciesId = speciesResult.insertId;
+    
+    // Generates correct data objects since the id returned is just the index of the first row.
     groupEntryData.push(concatIds(groupId, speciesId, insertData.length, ["species_group_id", "species_id"], true));
   }
-  //console.log(groupEntryData);
   let groupEntryQuery = squel
     .insert()
     .into("species_group_entry")
     .setFieldsRows([].concat.apply([], groupEntryData))
     .toString()
-  console.log(groupEntryQuery);
   let groupEntryId = await connection.query(groupEntryQuery);
-  console.log(groupEntryId);
 }
+
 function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
   let output = [];
   for (let id = startingIndex; id < (startingIndex + qty); id++) {
@@ -98,11 +55,10 @@ function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
   return output;
 }
 
-//addDummyData(exampleData);
 async function getSpeciesLists() {
   let connection = await mysql.createConnection(config.connection);
   let getSpecies = await connection.query(config.getAllDataQuery);
-  //console.log(getSpecies);
+  
   let output = [];
   let structureObj = {};
   for (let row of getSpecies) {
@@ -120,7 +76,6 @@ async function getSpeciesLists() {
       id: row.species_id,
       name: row.species_name
     });
-    console.log(group);
     if (!exists) structureObj[row.species_group_id.toString()] = group;
   }
   for (let group of Object.keys(structureObj)) {
@@ -132,6 +87,4 @@ async function getSpeciesLists() {
 async function addSurveyResults() {
   
 }
-getSpeciesLists();
-module.exports = { addDummyData, getSpeciesLists, addSurveyResults };
-
+module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults };
