@@ -1,7 +1,6 @@
 const mysql = require('promise-mysql');
 const squel = require('squel');
 
-const exampleData = require("./ui_files/api/species_lists.json");
 const config = require("../database/config.json");
 
 
@@ -42,6 +41,7 @@ async function insertSpeciesData(data) {
     .setFieldsRows([].concat.apply([], groupEntryData))
     .toString()
   let groupEntryId = await connection.query(groupEntryQuery);
+  connection.end();
 }
 
 function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
@@ -81,6 +81,7 @@ async function getSpeciesLists() {
   for (let group of Object.keys(structureObj)) {
     output.push(structureObj[group]);
   }
+  connection.end();
   return output;
 }
 
