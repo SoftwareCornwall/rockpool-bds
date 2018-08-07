@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 
+
 var body_parser = require('body-parser');
 var database = require('./handle_database.js');
-var fs = require("fs");
 var validation = require("./id_validation.js");
 
 app.use(function(req, res, next) {
@@ -39,13 +39,6 @@ app.post('/api/submitSurveyResults', function(req, res) {
 	}
 	database.addSurveyResults_2_Electric_Boogaloo(req.body);
 	res.status(200).send("OK");
-});
-
-app.post('/api/:id', function(req, res){
-	res.send();
-	var species_array = req.body.found_species.split(",");
-	database.addSurveyResults(species_array);
-	console.log("Survey Recieved: " + species_array.join(", "));
 });
 
 app.listen(3000, () => console.log('App listening on port 3000!'));
