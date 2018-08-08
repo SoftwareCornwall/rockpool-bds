@@ -37,7 +37,7 @@ app.post('/api/submitSurveyResults', function(req, res) {
 			return;
 		}
 	}
-	database.addSurveyResults_2_Electric_Boogaloo(req.body);
+	database.addSurveyResults(req.body);
 	res.status(200).send("OK");
 });
 
