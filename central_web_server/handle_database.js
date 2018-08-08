@@ -57,7 +57,7 @@ function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
 
 async function getSpeciesLists() {
   let connection = await mysql.createConnection(config.connection);
-  let getSpecies = await connection.query("getAllDataQuery": "SELECT species.id as species_id, species.name as species_name, species_group.id as species_group_id, species_group.name as species_group_name FROM ((species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id)");
+  let getSpecies = await connection.query("SELECT species.id as species_id, species.name as species_name, species_group.id as species_group_id, species_group.name as species_group_name FROM ((species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id)");
   
   let output = [];
   let structureObj = {};
@@ -85,9 +85,55 @@ async function getSpeciesLists() {
   return output;
 }
 
-async function addSurveyResults() {
+async function addSurveyResults(surveyData) {
+  let surveyObj = {};
+  for (let touristIndex in surveyData.tourist_id) {
+    surveyObj["tourist_"+(parseInt(touristIndex)+1)] = surveyData.tourist_id[touristIndex];
+  }
+  surveyObj.session_id = surveyData.session_id;
+  surveyObj.species_group_id = surveyData.species_list_id;
+  console.log(surveyObj);
+  let surveyQuery = squel
+    .insert()
+    .into("survey")
+    .setFieldsRows(surveyObj)
+    .toString()
+  let surveyResult = await connection.query(surveyQuery);
+  surveyId = surveyResult.insertId;
   
+  let surveyResults = [];
+  for (let species of surveyData.found_species) {}
+  }
+
+addSurveyResults(
+{
+	"species_list_id" : 4,
+	"tourist_id" : ["kh39b","jhu89"],
+	"session_id" : "0g55l",
+	"found_species" :[
+    {
+      "species_id": 1
+    },
+    {
+      "species_id": 3
+    },
+    {
+      "species_id": 6
+    },
+    {
+      "species_id": 7
+    }
+  ]
+});
+
+/* 
+ * {
+	"species_list_id" : 4,
+	"tourist_id" : ["kh39b"],
+	"session_id" : "0g55l",
+	"found_species" :[1,3,6,7]
 }
+* */
 
 var addSurveyResults_2_Electric_Boogaloo = function(results) {
 	fs.writeFileSync("./ui_files/api/array.txt", JSON.stringify(results));		
