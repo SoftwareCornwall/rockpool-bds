@@ -6,13 +6,26 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 		<meta name="HandheldFriendly" content="true"/>
 		<link href="index.css" rel="stylesheet" type="text/css"/>
+		<script src="master.js"></script>
 		<script src="index.js"></script>
-		<script src="init.js"></script>
 		<title>Rockpooling</title>
 	</head>
 	<body>
 		<div id="header">The Rockpool Project</div>
-		<div id="container"></div>
-		<button id="submit">Submit</button>
+		<div id="container">
+			<div id="controls">
+				<p>Session ID</p>
+				<input id="session-id-input" type="text"/>
+				<p>Species List</p>
+				<select id="species-list-select"></select>
+				<p>Tourist IDs</p>
+				<div id="tourist-controls">
+					<input id="tourist-input-0" type="text"/>
+					<input id="tourist-input-1" type="text"/>
+					<input id="tourist-input-2" type="text"/>
+				</div>
+			</div>
+		</div>
+		<button id="continue-button">Continue</button>
 	</body>
 </html>
