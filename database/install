@@ -1,0 +1,10 @@
+$ sudo apt-get install -y mysql-server
+
+$ sudo mysql -u root 
+
+> CREATE USER rockpool IDENTIFIED BY 'abcd1234'; 
+
+> GRANT ALL ON *.* TO 'rockpool';
+
+> exit
+

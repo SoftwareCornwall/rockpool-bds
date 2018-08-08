@@ -1,0 +1,42 @@
+[
+	{
+		"species_list_id": 1,
+		"species_list": "crabs",
+		"species": [
+		{"id":1, "name": "crabus minimalus"},
+		{"id":2, "name": "crabus ninjarius"}
+		]
+	},
+	{
+		"species_list_id": 2,
+		"species_list": "fish",
+		"species": [
+		{"id":1, "name": "Swordfishius Maximus"},
+		{"id":2, "name": "Sharkus Terribilis"},
+		{"id":3, "name": "Fishius Naughtius"},
+		{"id":4, "name": "Fishus Cannis"}
+		]
+	},
+	{
+		"species_list_id": 3,
+		"species_list": "wracks",
+		"species": [
+		{"id":1, "name": "Cerebral Wrack"},
+		{"id":2, "name": "Plebius Wrack"},
+		{"id":3, "name": "Pugilus Wrack"}
+		]
+	},
+	{
+		"species_list_id": 4,
+		"species_list": "lost pennies",
+		"species": [
+		{"id":1, "name": "10p"},
+		{"id":2, "name": "20p"},
+		{"id":3, "name": "50p"},
+		{"id":4, "name": "5p"},
+		{"id":5, "name": "1p"},
+		{"id":6, "name": "2p"},
+		{"id":7, "name": "£1"}
+		]
+	}
+]
