@@ -25,6 +25,7 @@ var getSpeciesLists = function() {
 
 var addSurveyResults_2_Electric_Boogaloo = function(results) {
 	fs.writeFileSync("./ui_files/api/array.txt", JSON.stringify(results));		
+	return true;
 }
 
 
