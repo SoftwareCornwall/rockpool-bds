@@ -25,8 +25,10 @@ app.use(express.static('ui_files'));
 
 app.get('/', (req, res) => res.sendFile('index.html'));
 
-app.get('/api/getSpeciesLists', function(req, res) {
-	res.send(JSON.stringify(database.getSpeciesLists()));
+app.get('/api/getSpeciesLists', async function(req, res) {
+	var lists = await database.getSpeciesLists();
+	console.log(lists);
+	res.send(JSON.stringify(lists));
 });
 
 app.post('/api/submitSurveyResults', async function(req, res) {
@@ -37,7 +39,7 @@ app.post('/api/submitSurveyResults', async function(req, res) {
 			return;
 		}
 	}
-	var success = await database.addSurveyResults_2_Electric_Boogaloo(req.body);
+	var success = await database.addSurveyResults(req.body);
 	if (success) { res.status(200).send("OK"); }
 	else { res.status(500).send("An Error Occured"); }
 });
@@ -45,6 +47,7 @@ app.post('/api/submitSurveyResults', async function(req, res) {
 app.post('/api/finishSessionSetup', async function() {
 	consle.log(req.body);
 	await database.finishSessionSetup(req.body)
+
 });
 
 app.listen(3000, () => console.log('App listening on port 3000!'));
