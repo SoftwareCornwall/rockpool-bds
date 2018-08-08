@@ -22,7 +22,7 @@ body {
 	align-items: center;
 }
 
-#continue-button {
+#footer-button {
 	font-size: 1.6em;
 	color: #ffffff;
 	background-color: #a2ad59;
@@ -33,7 +33,7 @@ body {
 	height: 60px;
 }
 
-#continue-button:active {
+#footer-button:active {
 	background-color: #5b5d66;
 }
 
