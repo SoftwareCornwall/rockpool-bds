@@ -19,10 +19,10 @@ function handleSpeciesListDownload(result) {
 
     for (var i = 0; i < speciesList.length; i++) {
         createHTMLElement({
-            tag: "option",
-            parent: list,
-            text: speciesList[i].species_list,
-            attributes: { value: speciesList[i].species_list_id }
+            "tag": "option",
+            "parent": list,
+            "text": speciesList[i].species_list,
+            "attributes": { "value": speciesList[i].species_list_id }
         });
     }
 }
@@ -87,7 +87,6 @@ function continueButton_click() {
     window.localStorage.setItem("speciesList", speciesListId);
     window.localStorage.setItem("touristIds", touristIds);
     window.localStorage.setItem("species", JSON.stringify(speciesList));
-    //TODO: only send required data.
 
     window.location = "./survey.html";
 }
@@ -96,7 +95,6 @@ function initialise() {
     const speciesListsURL = "/api/getSpeciesLists";
     getData(speciesListsURL, (result) => handleSpeciesListDownload(result));
     document.getElementById("continue-button").addEventListener("click", continueButton_click);
-    //handleSpeciesListDownload(JSON.stringify(speciesLists));
 }
 
 window.onload = initialise;

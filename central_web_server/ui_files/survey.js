@@ -61,25 +61,25 @@ function species_onClick(id) {
 
 function loadSpecies(name, id, image, container) {    
     var species = createHTMLElement({
-        tag: "div",
-        parent: container,
-        events: { "click": (() => species_onClick(id)) },
-        attributes: {
-            class: "species",
-            id: id
+        "tag": "div",
+        "parent": container,
+        "events": { "click": (() => species_onClick(id)) },
+        "attributes": {
+            "class": "species",
+            "id": id
         }
     });
 
     createHTMLElement({
-        tag: "span",
-        parent: species,
-        text: name
+        "tag": "span",
+        "parent": species,
+        "text": name
     });
 
     createHTMLElement({
-        tag: "img",
-        parent: species,
-        attributes: { src: image }
+        "tag": "img",
+        "parent": species,
+        "attributes": { "src": image }
     });
 }
 
