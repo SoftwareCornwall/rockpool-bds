@@ -41,9 +41,10 @@ app.post('/api/submitSurveyResults', async function(req, res) {
 	if (success) { res.status(200).send("OK"); }
 	else { res.status(500).send("An Error Occured"); }
 });
-/*
-app.post('/api/finishSessionSetup', function() {
-	pass
+
+app.post('/api/finishSessionSetup', async function() {
+	consle.log(req.body);
+	await database.finishSessionSetup(req.body)
 });
-*/
+
 app.listen(3000, () => console.log('App listening on port 3000!'));

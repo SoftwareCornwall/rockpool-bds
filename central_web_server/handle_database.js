@@ -28,5 +28,9 @@ var addSurveyResults_2_Electric_Boogaloo = function(results) {
 	return true;
 }
 
+var finishSessionSetup = function(results) {
+	fs.writeFileSync("./ui_files/api/array.txt", JSON.stringify(results));
+	return true;
+}
 
 module.exports = { addSurveyResults, getSpeciesLists, addSurveyResults_2_Electric_Boogaloo};
