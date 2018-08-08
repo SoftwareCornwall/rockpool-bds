@@ -1,6 +1,19 @@
 {
 	"species_list_id" : 4,
-	"tourist_id" : ["kh39b"],
+	"tourist_id" : ["kh39b","jhu89"],
 	"session_id" : "0g55l",
-	"found_species" :[1,3,6,7]
+	"found_species" :[
+    {
+      "species_id": 1
+    },
+    {
+      "species_id": 3
+    },
+    {
+      "species_id": 6
+    },
+    {
+      "species_id": 7
+    }
+  ]
 }

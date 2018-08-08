@@ -86,13 +86,37 @@ async function getSpeciesLists() {
   return output;
 }
 
-async function addSurveyResults() {
+async function addSurveyResults(surveyData) {
+  let connection = await mysql.createConnection(config.connection);
+  let surveyObj = {};
+  for (let touristIndex in surveyData.tourist_id) {
+    surveyObj["tourist_id_"+(parseInt(touristIndex)+1)] = surveyData.tourist_id[touristIndex];
+  }
+  surveyObj.session_id = surveyData.session_id;
+  surveyObj.species_group_id = surveyData.species_list_id;
+  console.log(surveyObj);
+  let surveyQuery = squel
+    .insert()
+    .into("survey")
+    .setFieldsRows([surveyObj])
+    .toString()
+  let surveyResult = await connection.query(surveyQuery);
+  surveyId = surveyResult.insertId;
   
+  let surveyResults = [];
+  for (let species of surveyData.found_species) {
+    surveyResults.push({
+      "species_id": species.species_id,
+      "survey_id": surveyId
+    })
+  }
+  let surveyResultsQuery = squel
+    .insert()
+    .into("survey_results")
+    .setFieldsRows(surveyResults)
+    .toString()
+  await connection.query(surveyResultsQuery)
 }
 
-var addSurveyResults_2_Electric_Boogaloo = function(results) {
-	fs.writeFileSync("./ui_files/api/array.txt", JSON.stringify(results));		
-}
 
-
-module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults, addSurveyResults_2_Electric_Boogaloo };
+module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults };
