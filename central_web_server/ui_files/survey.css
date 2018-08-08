@@ -59,8 +59,8 @@ body {
 }
 
 .selectedSpecies {
-	color: #a2ad59;
-	background-color: #000000;
+	color: #000000;
+	background-color: #a2ad59;
 }
 
 .species img {
