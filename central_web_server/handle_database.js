@@ -87,8 +87,6 @@ async function getSpeciesLists() {
 }
 
 async function addSurveyResults(surveyData) {
-  console.log("surveyData");
-  console.log(surveyData);
   let connection = await mysql.createConnection(config.connection);
   let surveyObj = {};
   for (let touristIndex in surveyData.tourist_id) {
@@ -96,8 +94,6 @@ async function addSurveyResults(surveyData) {
   }
   surveyObj.session_id = surveyData.session_id;
   surveyObj.species_group_id = surveyData.species_list_id;
-  console.log("surveyObj");
-  console.log(surveyObj);
   let surveyQuery = squel
     .insert()
     .into("survey")
@@ -113,38 +109,49 @@ async function addSurveyResults(surveyData) {
       "survey_id": surveyId
     })
   }
-  console.log("surveyResults");
-  console.log(surveyResults);
   let surveyResultsQuery = squel
     .insert()
     .into("survey_results")
     .setFieldsRows(surveyResults)
     .toString()
   await connection.query(surveyResultsQuery)
+  connection.end();
 }
-addSurveyResults ({
-	"species_list_id" : 4,
-	"tourist_id" : ["kh39b","jhu89"],
-	"session_id" : "0g55l",
-	"found_species" :[
-    {
-      "species_id": 1
-    },
-    {
-      "species_id": 3
-    },
-    {
-      "species_id": 6
-    },
-    {
-      "species_id": 7
-    }
-  ]
-})
 
 async function addSession(data) {
   let connection = await mysql.createConnection(config.connection);
-  
-  }
+  let sessionQuery = squel
+    .insert()
+    .into("session")
+    .setFieldsRows([data])
+    .toString()
+  let sessionResult = await connection.query(sessionQuery);
+  connection.end();
+  return sessionResult.insertId;
+}
 
-module.exports = { addSpeciesData, getSpeciesLists, addSurveyResults };
+async function addLocation(data) {
+  console.log(data);
+  let connection = await mysql.createConnection(config.connection);
+  let locationQuery = squel
+    .insert()
+    .into("location")
+    .setFieldsRows(data)
+    .toString()
+  let locationResult = await connection.query(locationQuery);
+  connection.end();
+}
+
+async function getLocation() {
+  let connection = await mysql.createConnection(config.connection);
+  let getLocationQuery = squel
+    .select()
+    .from("location")
+    .toString()
+  let getLocationResult = await connection.query(getLocationQuery);
+  console.log(getLocationResult);
+  connection.end();
+}
+addLocation([{"name": "Mars"}]);
+getLocation();
+module.exports = { addSpeciesData, getSpeciesLists, addSurveyResults, addSession, addLocation, getLocation };
