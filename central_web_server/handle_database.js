@@ -171,8 +171,8 @@ async function getLocation() {
     .from("location")
     .toString();
   let getLocationResult = await connection.query(getLocationQuery);
-  console.log(getLocationResult);
   connection.end();
+  return getLocationResult;
 }
 
 module.exports = { addSpeciesData, getSpeciesLists, addSurveyResults, addSession, addLocation, getLocation };
