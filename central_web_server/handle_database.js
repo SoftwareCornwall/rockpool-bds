@@ -15,7 +15,7 @@ async function addSpeciesData(data) {
       .insert()
       .into("species_group")
       .setFieldsRows([{name: group.species_list}])
-      .toString()
+      .toString();
     
     let groupResult = await connection.query(queryGroup);
     groupId = groupResult.insertId;
@@ -28,7 +28,7 @@ async function addSpeciesData(data) {
       .insert()
       .into("species")
       .setFieldsRows(insertData)
-      .toString()
+      .toString();
     
     let speciesResult = await connection.query(querySpecies);
     speciesId = speciesResult.insertId;
@@ -40,7 +40,7 @@ async function addSpeciesData(data) {
     .insert()
     .into("species_group_entry")
     .setFieldsRows([].concat.apply([], groupEntryData))
-    .toString()
+    .toString();
   let groupEntryId = await connection.query(groupEntryQuery);
   connection.end();
 }
@@ -71,7 +71,7 @@ async function getSpeciesLists() {
       group.species = [];
     } else {
       exists = true;
-      group = structureObj[row.species_group_id.toString()]
+      group = structureObj[row.species_group_id.toString()];
     }
     group.species.push({
       id: row.species_id,
@@ -113,8 +113,8 @@ async function addSurveyResults(surveyData) {
     .insert()
     .into("survey_results")
     .setFieldsRows(surveyResults)
-    .toString()
-  await connection.query(surveyResultsQuery)
+    .toString();
+  await connection.query(surveyResultsQuery);
   connection.end();
 }
 
@@ -124,7 +124,7 @@ async function addSession(data) {
     .insert()
     .into("session")
     .setFieldsRows([data])
-    .toString()
+    .toString();
   let sessionResult = await connection.query(sessionQuery);
   connection.end();
   return sessionResult.insertId;
@@ -137,7 +137,7 @@ async function addLocation(data) {
     .insert()
     .into("location")
     .setFieldsRows(data)
-    .toString()
+    .toString();
   let locationResult = await connection.query(locationQuery);
   connection.end();
 }
@@ -147,7 +147,7 @@ async function getLocation() {
   let getLocationQuery = squel
     .select()
     .from("location")
-    .toString()
+    .toString();
   let getLocationResult = await connection.query(getLocationQuery);
   console.log(getLocationResult);
   connection.end();
