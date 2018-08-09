@@ -1,5 +1,5 @@
 const database = require("../central_web_server/handle_database.js");
-database.insertSpeciesData([
+database.addSpeciesData([
 	{
 		"species_list_id": 1,
 		"species_list": "crabs",

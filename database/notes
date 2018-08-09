@@ -6,3 +6,31 @@ chmod +x restart.sh
 mysql -u rockpool -p
 
 SELECT species.id as species_id, species.name as species_name, species_group.id as species_group_id, species_group.name as species_group_name FROM ((species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id);
+
+SELECT species.id as species_id,
+  species.name as species_name,
+  species_group.id as species_group_id,
+  species_group.name as species_group_name 
+FROM (
+  (species_group_entry INNER JOIN species ON species_group_entry.species_id = species.id) 
+  INNER JOIN species_group ON species_group_entry.species_group_id = species_group.id
+);
+
+to print to csv file:
+
+species name 
+species group
+survey_id
+survey_results_id
+tourist_id_1
+tourist_id_2
+tourist_id_3
+session_id
+date
+location name
+time low tide
+height low tide
+weather
+temperature
+
+SELECT 
