@@ -31,7 +31,7 @@ app.get('/api/getSpeciesLists', async function(req, res) {
 	res.send(JSON.stringify(lists));
 });
 
-app.post('/api/submitSurveyResults', function(req, res) {
+app.post('/api/submitSurveyResults', async function(req, res) {
 	console.log(req.body.found_species);
 	for (let i = 0; i < req.body.tourist_id.length; i++) {
 		if (validation.validate_id(req.body.tourist_id[i]) === false) {
@@ -39,8 +39,21 @@ app.post('/api/submitSurveyResults', function(req, res) {
 			return;
 		}
 	}
-	database.addSurveyResults(req.body);
-	res.status(200).send("OK");
+	var success = await database.addSurveyResults(req.body);
+	if (success) { res.status(200).send("OK"); }
+	else { res.status(500).send("An Error Occured"); }
+});
+
+app.post('/api/finishSessionSetup', async function(req, res) {
+	console.log(req.body);
+	let sessionID = await database.addSession(req.body)
+	res.status(200).send(sessionID);
+});
+
+app.get('/api/getLocations', async function(req, res) {
+	var locations =  await database.getLocation();
+	console.log(locations);
+	res.send(JSON.stringify(locations));
 });
 
 app.listen(3000, () => console.log('App listening on port 3000!'));
