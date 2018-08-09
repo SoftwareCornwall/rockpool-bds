@@ -1,3 +1,7 @@
+function handleDataSubmission() {
+    
+}
+
 function footerButton_click() {
     var tideTime = document.getElementById("tide-time-input").value;
     var tideHeight = document.getElementById("tide-height-input").value;
@@ -14,6 +18,12 @@ function footerButton_click() {
     localStorage.setItem("tideTime", tideTime);
     localStorage.setItem("tideHeight", tideHeight);
     localStorage.setItem("location", location);
+    
+    var data = {
+        
+    };
+    
+    postJSON("", handleDataSubmission, data);
 }
 
 function handleLocationsFetch(http) {
@@ -23,8 +33,18 @@ function handleLocationsFetch(http) {
         return;
     }
     
-    var json = JSON.parse(http.responseText);
-    console.log(json);
+    var locations = JSON.parse(http.responseText);
+    console.log(locations);
+    
+    var list = document.getElementById("locations-list");
+    for (var i = 0; i < locations.length; i++) {
+        createHTMLElement({
+            "tag": "option",
+            "parent": list,
+            "attributes": { "id": locations[i].id },
+            "text": locations[i].name
+        });
+    }
 }
 
 function initialise() {
