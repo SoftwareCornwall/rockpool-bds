@@ -14,17 +14,25 @@ async function addSpeciesData(data) {
     let queryGroupExists = squel
       .select()
       .from("species_group", "id")
-      .where("name = " + group.species_list)
+      .where("name = '" + group.species_list + "'")
       .toString();
+    let groupExistsResult = await connection.query(queryGroupExists);
+    console.log(groupExistsResult);
+    let groupId = "";
     
-    let queryGroup = squel
-      .insert()
-      .into("species_group")
-      .setFieldsRows([{name: group.species_list}])
-      .toString();
-    
-    let groupResult = await connection.query(queryGroup);
-    groupId = groupResult.insertId;
+    if (!groupExistsResult.length) {
+      let queryGroup = squel
+        .insert()
+        .into("species_group")
+        .setFieldsRows([{name: group.species_list}])
+        .toString();
+      
+      let groupResult = await connection.query(queryGroup);
+      groupId = groupResult.insertId;
+    } else {
+       // First result because we don't know which one to pick.
+      groupId = groupExistsResult[0].id; 
+    }
     
     for (let species of group.species) {
       insertData.push({name: species.name});
