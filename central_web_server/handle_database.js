@@ -104,8 +104,8 @@ async function addSurveyResults(surveyData) {
     .toString()
   let surveyResult = await connection.query(surveyQuery);
   surveyId = surveyResult.insertId;
-  
   let surveyResults = [];
+  if (!surveyData.found_species.length) return true;
   for (let species of surveyData.found_species) {
     surveyResults.push({
       "species_id": species.species_id,
@@ -122,7 +122,12 @@ async function addSurveyResults(surveyData) {
   connection.end();
   return true;
 }
-
+addSurveyResults({
+  "species_list_id" : 4,
+  "tourist_id" : ["kh39b","jhu89"],
+  "session_id" : "0g55l",
+  "found_species" : []
+});
 async function addSession(data) {
   let connection = await mysql.createConnection(config.connection);
   let sessionQuery = squel
