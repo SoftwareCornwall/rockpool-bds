@@ -30,8 +30,14 @@ function logHttpStateChange(http) {
 }
 
 function submit_onClick() {
+    let submittedSpecies = [];
+    for (let species of foundSpecies) {
+      submittedSpecies.push({
+        "species_id": species
+      });
+    }
     var submitData = {
-        "found_species": foundSpecies,
+        "found_species": submittedSpecies,
         "species_list_id": window.localStorage.getItem("speciesList"),
         "tourist_id": window.localStorage.getItem("touristIds").split(","),
         "session_id": window.localStorage.getItem("sessionId")

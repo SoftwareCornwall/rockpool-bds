@@ -5,7 +5,7 @@ const fs = require('fs');
 const config = require("../database/config.json");
 
 
-async function insertSpeciesData(data) {
+async function addSpeciesData(data) {
   let connection = await mysql.createConnection(config.connection);
   let groupEntryData = [];
   for (let group of data) {
@@ -15,7 +15,7 @@ async function insertSpeciesData(data) {
       .insert()
       .into("species_group")
       .setFieldsRows([{name: group.species_list}])
-      .toString()
+      .toString();
     
     let groupResult = await connection.query(queryGroup);
     groupId = groupResult.insertId;
@@ -28,7 +28,7 @@ async function insertSpeciesData(data) {
       .insert()
       .into("species")
       .setFieldsRows(insertData)
-      .toString()
+      .toString();
     
     let speciesResult = await connection.query(querySpecies);
     speciesId = speciesResult.insertId;
@@ -40,9 +40,11 @@ async function insertSpeciesData(data) {
     .insert()
     .into("species_group_entry")
     .setFieldsRows([].concat.apply([], groupEntryData))
-    .toString()
+    .toString();
   let groupEntryId = await connection.query(groupEntryQuery);
+  console.log(groupEntryId);
   connection.end();
+  return true;
 }
 
 function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
@@ -71,7 +73,7 @@ async function getSpeciesLists() {
       group.species = [];
     } else {
       exists = true;
-      group = structureObj[row.species_group_id.toString()]
+      group = structureObj[row.species_group_id.toString()];
     }
     group.species.push({
       id: row.species_id,
@@ -87,6 +89,7 @@ async function getSpeciesLists() {
 }
 
 async function addSurveyResults(surveyData) {
+  console.log("addSurveyResults called!");
   let connection = await mysql.createConnection(config.connection);
   let surveyObj = {};
   for (let touristIndex in surveyData.tourist_id) {
@@ -94,7 +97,6 @@ async function addSurveyResults(surveyData) {
   }
   surveyObj.session_id = surveyData.session_id;
   surveyObj.species_group_id = surveyData.species_list_id;
-  console.log(surveyObj);
   let surveyQuery = squel
     .insert()
     .into("survey")
@@ -114,9 +116,47 @@ async function addSurveyResults(surveyData) {
     .insert()
     .into("survey_results")
     .setFieldsRows(surveyResults)
-    .toString()
-  await connection.query(surveyResultsQuery)
+    .toString();
+  let resp = await connection.query(surveyResultsQuery);
+  console.log(resp);
+  connection.end();
+  return true;
 }
 
+async function addSession(data) {
+  let connection = await mysql.createConnection(config.connection);
+  let sessionQuery = squel
+    .insert()
+    .into("session")
+    .setFieldsRows([data])
+    .toString();
+  let sessionResult = await connection.query(sessionQuery);
+  connection.end();
+  return sessionResult.insertId;
+}
 
-module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults };
+async function addLocation(data) {
+  console.log(data);
+  let connection = await mysql.createConnection(config.connection);
+  let locationQuery = squel
+    .insert()
+    .into("location")
+    .setFieldsRows(data)
+    .toString();
+  let locationResult = await connection.query(locationQuery);
+  connection.end();
+  return true;
+}
+
+async function getLocation() {
+  let connection = await mysql.createConnection(config.connection);
+  let getLocationQuery = squel
+    .select()
+    .from("location")
+    .toString();
+  let getLocationResult = await connection.query(getLocationQuery);
+  console.log(getLocationResult);
+  connection.end();
+}
+
+module.exports = { addSpeciesData, getSpeciesLists, addSurveyResults, addSession, addLocation, getLocation };
