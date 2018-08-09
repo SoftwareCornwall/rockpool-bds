@@ -11,7 +11,7 @@ CREATE TABLE survey_results (
 CREATE TABLE session (
   id int AUTO_INCREMENT PRIMARY KEY,
   date datetime NOT NULL,
-  location_id varchar(5) NOT NULL,
+  location_id int NOT NULL,
   time_low_tide time NOT NULL,
   height_low_tide tinyint NOT NULL,
   temperature float NOT NULL,
