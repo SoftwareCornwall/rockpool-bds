@@ -44,10 +44,16 @@ app.post('/api/submitSurveyResults', async function(req, res) {
 	else { res.status(500).send("An Error Occured"); }
 });
 
-app.post('/api/finishSessionSetup', async function() {
-	consle.log(req.body);
-	await database.finishSessionSetup(req.body)
+app.post('/api/finishSessionSetup', async function(req, res) {
+	console.log(req.body);
+	let sessionID = await database.addSession(req.body)
+	res.status(200).send(sessionID);
+});
 
+app.get('/api/getLocations', async function(req, res) {
+	var locations =  await database.getLocation();
+	console.log(locations);
+	res.send(JSON.stringify(locations));
 });
 
 app.listen(3000, () => console.log('App listening on port 3000!'));

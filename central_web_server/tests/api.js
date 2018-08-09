@@ -1,15 +1,23 @@
+var request = require("request-promise-native")
 var fs = require('fs');
 
-var post_json = function (target, stateChangeHandler, json) {
-	let data = fs.readFileSync(json);
-	var http = new XMLHttpRequest();
-	
-	const isAsync = true;
-	http.open("POST", target, isAsync);
-	
-	http.setRequestHeader("Content-type", "application/json");
-	http.onreadystatechange = (() => stateChangeHandler(http));
-	http.send(data);
+var post_json = async function (target, stateChangeHandler, jsonFile) {
+	let json = JSON.parse(fs.readFileSync(jsonFile));
+	console.log(json);
+	var options = {
+		method: 'POST',
+		uri: target,
+		body: json,
+		json: true
+	};
+	let result = await request(options)
+	.then(function(body) {
+		return "OK";
+	})
+	.catch(function (err) {
+        return "Error";
+    });
+	stateChangeHandler(result);
 }
 
-post_json("/api/finishSessionSetup", console.log, "placeholder_finishedSessionSetup.json")
+post_json("http://localhost:3000/api/finishSessionSetup", console.log, "../../example_data/placeholder_finishedSessionSetup.json");

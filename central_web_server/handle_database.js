@@ -118,9 +118,15 @@ async function addSurveyResults(surveyData) {
   await connection.query(surveyResultsQuery)
 }
 
-var finishSessionSetup = function(results) {
+var addSession = async function(results) {
 	fs.writeFileSync("./ui_files/api/array.txt", JSON.stringify(results));
-	return true;
+	sessionID = 56
+	return sessionID.toString(36);
 }
 
-module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults };
+var getLocation = async function() {
+	let locations = JSON.parse(fs.readFileSync("../example_data/placeholder_locations.json"));
+	return locations
+}
+
+module.exports = { insertSpeciesData, getSpeciesLists, addSurveyResults, addSession, getLocation };
