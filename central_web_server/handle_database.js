@@ -42,7 +42,9 @@ async function addSpeciesData(data) {
     .setFieldsRows([].concat.apply([], groupEntryData))
     .toString();
   let groupEntryId = await connection.query(groupEntryQuery);
+  console.log(groupEntryId);
   connection.end();
+  return true;
 }
 
 function concatIds(groupId, startingIndex, qty, fieldNames, retStr = false) {
@@ -87,6 +89,7 @@ async function getSpeciesLists() {
 }
 
 async function addSurveyResults(surveyData) {
+  console.log("addSurveyResults called!");
   let connection = await mysql.createConnection(config.connection);
   let surveyObj = {};
   for (let touristIndex in surveyData.tourist_id) {
@@ -114,8 +117,10 @@ async function addSurveyResults(surveyData) {
     .into("survey_results")
     .setFieldsRows(surveyResults)
     .toString();
-  await connection.query(surveyResultsQuery);
+  let resp = await connection.query(surveyResultsQuery);
+  console.log(resp);
   connection.end();
+  return true;
 }
 
 async function addSession(data) {
@@ -140,6 +145,7 @@ async function addLocation(data) {
     .toString();
   let locationResult = await connection.query(locationQuery);
   connection.end();
+  return true;
 }
 
 async function getLocation() {
@@ -152,6 +158,5 @@ async function getLocation() {
   console.log(getLocationResult);
   connection.end();
 }
-addLocation([{"name": "Mars"}]);
-getLocation();
+
 module.exports = { addSpeciesData, getSpeciesLists, addSurveyResults, addSession, addLocation, getLocation };
