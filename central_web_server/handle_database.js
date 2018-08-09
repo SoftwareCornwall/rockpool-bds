@@ -124,10 +124,11 @@ async function addSurveyResults(surveyData) {
       .setFieldsRows(surveyResults)
       .toString();
     await connection.query(surveyResultsQuery);
+    return true;
+    
   } finally {
     connection.end();
   }
-  return true;
 }
 
 async function addSession(data) {
