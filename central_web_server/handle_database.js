@@ -11,6 +11,12 @@ async function addSpeciesData(data) {
   for (let group of data) {
     let insertData = [];
     
+    let queryGroupExists = squel
+      .select()
+      .from("species_group", "id")
+      .where("name = " + group.species_list)
+      .toString();
+    
     let queryGroup = squel
       .insert()
       .into("species_group")
@@ -89,38 +95,40 @@ async function getSpeciesLists() {
 }
 
 async function addSurveyResults(surveyData) {
-  console.log("addSurveyResults called!");
   let connection = await mysql.createConnection(config.connection);
-  let surveyObj = {};
-  for (let touristIndex in surveyData.tourist_id) {
-    surveyObj["tourist_id_"+(parseInt(touristIndex)+1)] = surveyData.tourist_id[touristIndex];
+  try {
+    let surveyObj = {};
+    for (let touristIndex in surveyData.tourist_id) {
+      surveyObj["tourist_id_"+(parseInt(touristIndex)+1)] = surveyData.tourist_id[touristIndex];
+    }
+    surveyObj.session_id = surveyData.session_id;
+    surveyObj.species_group_id = surveyData.species_list_id;
+    let surveyQuery = squel
+      .insert()
+      .into("survey")
+      .setFieldsRows([surveyObj])
+      .toString();
+    let surveyResult = await connection.query(surveyQuery);
+    surveyId = surveyResult.insertId;
+    let surveyResults = [];
+    if (!surveyData.found_species.length) return true;
+    for (let species of surveyData.found_species) {
+      surveyResults.push({
+        "species_id": species.species_id,
+        "survey_id": surveyId
+      });
+    }
+    let surveyResultsQuery = squel
+      .insert()
+      .into("survey_results")
+      .setFieldsRows(surveyResults)
+      .toString();
+    await connection.query(surveyResultsQuery);
+    return true;
+    
+  } finally {
+    connection.end();
   }
-  surveyObj.session_id = surveyData.session_id;
-  surveyObj.species_group_id = surveyData.species_list_id;
-  let surveyQuery = squel
-    .insert()
-    .into("survey")
-    .setFieldsRows([surveyObj])
-    .toString()
-  let surveyResult = await connection.query(surveyQuery);
-  surveyId = surveyResult.insertId;
-  
-  let surveyResults = [];
-  for (let species of surveyData.found_species) {
-    surveyResults.push({
-      "species_id": species.species_id,
-      "survey_id": surveyId
-    })
-  }
-  let surveyResultsQuery = squel
-    .insert()
-    .into("survey_results")
-    .setFieldsRows(surveyResults)
-    .toString();
-  let resp = await connection.query(surveyResultsQuery);
-  console.log(resp);
-  connection.end();
-  return true;
 }
 
 async function addSession(data) {
