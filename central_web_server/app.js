@@ -32,14 +32,13 @@ app.get('/api/getSpeciesLists', async function(req, res) {
 });
 
 app.post('/api/submitSurveyResults', function(req, res) {
-  console.log("Validating...");
+	console.log(req.body.found_species);
 	for (let i = 0; i < req.body.tourist_id.length; i++) {
 		if (validation.validate_id(req.body.tourist_id[i]) === false) {
 			res.status(402).send("Payment Required");
 			return;
 		}
 	}
-  console.log("Adding to database...");
 	database.addSurveyResults(req.body);
 	res.status(200).send("OK");
 });
