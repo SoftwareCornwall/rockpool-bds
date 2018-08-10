@@ -1,0 +1,27 @@
+.species {
+	background-color: #177e89;
+	color: #ffffff;
+	
+	width: 95%;
+	padding: 2.5%;
+	margin: 5%;
+	
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.selectedSpecies {
+	color: #000000;
+	background-color: #a2ad59;
+}
+
+.species img {
+	width: 60px;
+	height: 60px;
+}
+
+#container {
+    width: 90%;
+}
+

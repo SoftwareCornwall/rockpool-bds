@@ -2,17 +2,6 @@
 
 var speciesList = [];
 
-function getData(target, loadHandler) {
-    var http = new XMLHttpRequest();
-
-    const isAsync = true;
-    http.open("GET", target, isAsync);
-
-    http.setRequestHeader("Content-type", "application/json");
-    http.addEventListener("load", () => loadHandler(http.responseText));
-    http.send();
-}
-
 function handleSpeciesListDownload(result) {
     speciesList = JSON.parse(result);
     var list = document.getElementById("species-list-select");
