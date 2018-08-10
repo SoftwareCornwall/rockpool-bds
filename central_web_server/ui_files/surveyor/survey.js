@@ -17,7 +17,7 @@ function logHttpStateChange(http) {
     console.log(text);
 }
 
-function submit_onClick() {
+function footerButton_click() {
     let submittedSpecies = [];
     for (let species of foundSpecies) {
       submittedSpecies.push({
@@ -98,7 +98,7 @@ function initialise() {
         loadSpecies(name, id, image, container);
     }
 
-    document.getElementById("submit").addEventListener("click", submit_onClick);
+    document.getElementById("footer-button").addEventListener("click", footerButton_click);
 }
 
 window.onload = (() => initialise());

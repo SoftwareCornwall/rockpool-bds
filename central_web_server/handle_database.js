@@ -174,6 +174,7 @@ async function getLocation() {
     .toString();
   let getLocationResult = await connection.query(getLocationQuery);
   connection.end();
+  console.log(getLocationResult);
   return getLocationResult;
 }
 

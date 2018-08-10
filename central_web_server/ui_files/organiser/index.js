@@ -50,7 +50,7 @@ function handleLocationsFetch(http) {
 function initialise() {
     document.getElementById("footer-button").addEventListener("click", footerButton_click);
     
-    getData("http://10.24.1.69:3000/api/getLocations", handleLocationsFetch);
+    getData("/api/getLocations", handleLocationsFetch);
 }
 
 window.onload = initialise;
