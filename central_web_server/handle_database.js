@@ -11,17 +11,31 @@ async function addSpeciesData(data) {
   for (let group of data) {
     let insertData = [];
     
-    let queryGroup = squel
-      .insert()
-      .into("species_group")
-      .setFieldsRows([{name: group.species_list}])
+    let queryGroupExists = squel
+      .select()
+      .from("species_group", "id")
+      .where("name = '" + mysqlEscape(group.species_list) + "'")
       .toString();
+    let groupExistsResult = await connection.query(queryGroupExists);
+    console.log(groupExistsResult);
+    let groupId = "";
     
-    let groupResult = await connection.query(queryGroup);
-    groupId = groupResult.insertId;
+    if (!groupExistsResult.length) {
+      let queryGroup = squel
+        .insert()
+        .into("species_group")
+        .setFieldsRows([{name: mysqlEscape(group.species_list)}])
+        .toString();
+      
+      let groupResult = await connection.query(queryGroup);
+      groupId = groupResult.insertId;
+    } else {
+       // First result because we don't know which one to pick.
+      groupId = groupExistsResult[0].id; 
+    }
     
     for (let species of group.species) {
-      insertData.push({name: species.name});
+      insertData.push({name: mysqlEscape(species.name)});
     }
     
     let querySpecies = squel
@@ -89,38 +103,40 @@ async function getSpeciesLists() {
 }
 
 async function addSurveyResults(surveyData) {
-  console.log("addSurveyResults called!");
   let connection = await mysql.createConnection(config.connection);
-  let surveyObj = {};
-  for (let touristIndex in surveyData.tourist_id) {
-    surveyObj["tourist_id_"+(parseInt(touristIndex)+1)] = surveyData.tourist_id[touristIndex];
+  try {
+    let surveyObj = {};
+    for (let touristIndex in surveyData.tourist_id) {
+      surveyObj["tourist_id_"+(parseInt(touristIndex)+1)] = surveyData.tourist_id[touristIndex];
+    }
+    surveyObj.session_id = surveyData.session_id;
+    surveyObj.species_group_id = surveyData.species_list_id;
+    let surveyQuery = squel
+      .insert()
+      .into("survey")
+      .setFieldsRows([surveyObj])
+      .toString();
+    let surveyResult = await connection.query(surveyQuery);
+    surveyId = surveyResult.insertId;
+    let surveyResults = [];
+    if (!surveyData.found_species.length) return true;
+    for (let species of surveyData.found_species) {
+      surveyResults.push({
+        "species_id": species.species_id,
+        "survey_id": surveyId
+      });
+    }
+    let surveyResultsQuery = squel
+      .insert()
+      .into("survey_results")
+      .setFieldsRows(surveyResults)
+      .toString();
+    await connection.query(surveyResultsQuery);
+    return true;
+    
+  } finally {
+    connection.end();
   }
-  surveyObj.session_id = surveyData.session_id;
-  surveyObj.species_group_id = surveyData.species_list_id;
-  let surveyQuery = squel
-    .insert()
-    .into("survey")
-    .setFieldsRows([surveyObj])
-    .toString()
-  let surveyResult = await connection.query(surveyQuery);
-  surveyId = surveyResult.insertId;
-  
-  let surveyResults = [];
-  for (let species of surveyData.found_species) {
-    surveyResults.push({
-      "species_id": species.species_id,
-      "survey_id": surveyId
-    })
-  }
-  let surveyResultsQuery = squel
-    .insert()
-    .into("survey_results")
-    .setFieldsRows(surveyResults)
-    .toString();
-  let resp = await connection.query(surveyResultsQuery);
-  console.log(resp);
-  connection.end();
-  return true;
 }
 
 async function addSession(data) {
@@ -136,12 +152,14 @@ async function addSession(data) {
 }
 
 async function addLocation(data) {
-  console.log(data);
+  let dataEscaped = data.map(obj => {
+    return {"name": mysqlEscape(obj.name)};
+  });
   let connection = await mysql.createConnection(config.connection);
   let locationQuery = squel
     .insert()
     .into("location")
-    .setFieldsRows(data)
+    .setFieldsRows(dataEscaped)
     .toString();
   let locationResult = await connection.query(locationQuery);
   connection.end();
@@ -155,8 +173,33 @@ async function getLocation() {
     .from("location")
     .toString();
   let getLocationResult = await connection.query(getLocationQuery);
-  console.log(getLocationResult);
   connection.end();
+  return getLocationResult;
+}
+
+function mysqlEscape (str) {
+  return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+    switch (char) {
+      case "\0":
+        return "\\0";
+      case "\x08":
+        return "\\b";
+      case "\x09":
+        return "\\t";
+      case "\x1a":
+        return "\\z";
+      case "\n":
+        return "\\n";
+      case "\r":
+        return "\\r";
+      case "\"":
+      case "'":
+      case "\\":
+      case "%":
+        return "\\"+char; // prepends a backslash to backslash, percent,
+                          // and double/single quotes
+    }
+  });
 }
 
 module.exports = { addSpeciesData, getSpeciesLists, addSurveyResults, addSession, addLocation, getLocation };

@@ -44,42 +44,39 @@ function isAlphanumeric(phrase) {
 function findInvalidField(sessionId, touristIds) {
     var isSessionIdValid = ((sessionId.length == 5) && isAlphanumeric(sessionId));
     if (!isSessionIdValid) {
-        return "sessionId";
+        return "Session ID must be 5 letters or numbers.";
     }
 
     const maxTouristCount = 3;
     var isValidTouristCount = ((touristIds.length > 0) && (touristIds.length <= maxTouristCount));
     if (!isValidTouristCount)
-        return "touristIds";
+        return "There must be between 1 and 3 tourist IDs.";
 
 
     for (var i = 0; i < touristIds.length; i++) {
         var isValid = ((touristIds[i].length == 5) && isAlphanumeric(touristIds[i]));
-        if (!isValid) return "touristIds";
+        if (!isValid) return "Tourist IDs must be 5 letters or numbers.";
     }
 
-    return "none";
+    return "";
 }
 
 function continueButton_click() {
-    var sessionId = document.getElementById("session-id-input").value;
+    var sessionId = document.getElementById("session-id-input").value.toLowerCase();
     var speciesListId = document.getElementById("species-list-select").value;
 
     var touristIds = [];
     const noOfTourists = 3;
     for (let i = 0; i < noOfTourists; i++) {
-        var tourist = document.getElementById("tourist-input-" + i).value;
+        var tourist = document.getElementById("tourist-input-" + i).value.toLowerCase();
         if (tourist != "")
             touristIds.push(tourist);
     }
 
     var invalidField = findInvalidField(sessionId, touristIds);
 
-    if (invalidField == "sessionId") {
-        alert("Invalid Session ID");
-        return;
-    } else if (invalidField == "touristIds") {
-        alert("Invalid Tourist IDs");
+    if (invalidField != "") {
+        alert(invalidField);
         return;
     }
 
