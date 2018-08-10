@@ -52,6 +52,7 @@ app.post('/api/finishSessionSetup', async function(req, res) {
 
 app.get('/api/getLocations', async function(req, res) {
 	var locations =  await database.getLocation();
+	console.log("get locations called!");
 	console.log(locations);
 	res.send(JSON.stringify(locations));
 });
