@@ -12,12 +12,24 @@ var listInfo = {};
 
 var foundSpecies = [];
 
+function postJSON(target, stateChangeHandler, json) {
+    var data = JSON.stringify(json);
+    var http = new XMLHttpRequest();
+
+    const isAsync = true;
+    http.open("POST", "http://10.160.50.176:3000" + target, isAsync);
+
+    http.setRequestHeader("Content-type", "application/json");
+    http.onreadystatechange = (() => stateChangeHandler(http));
+    http.send(data);
+}
+
 function logHttpStateChange(http) {
     var text = "POST Response: readyState = '" + http.readyState + "', status = '" + http.status + "', responseText = '" + http.responseText + "'.";
     console.log(text);
 }
 
-function footerButton_click() {
+function submit_onClick() {
     let submittedSpecies = [];
     for (let species of foundSpecies) {
       submittedSpecies.push({
@@ -98,7 +110,8 @@ function initialise() {
         loadSpecies(name, id, image, container);
     }
 
-    document.getElementById("footer-button").addEventListener("click", footerButton_click);
+    document.getElementById("submit").addEventListener("click", submit_onClick);
 }
 
-window.onload = (() => initialise());
+//window.onload = (() => initialise());
+document.addEventListener('deviceready', initialise, false);

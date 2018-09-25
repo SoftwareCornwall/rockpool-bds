@@ -31,28 +31,3 @@ function createHTMLElement(args) {
 
     return element;
 }
-
-function postJSON(target, stateChangeHandler, json) {
-    var data = JSON.stringify(json);
-    var http = new XMLHttpRequest();
-
-    const isAsync = true;
-	var url = "http://10.160.50.176:3000" + target;
-    http.open("POST", url, isAsync);
-
-    http.setRequestHeader("Content-type", "application/json");
-    http.onreadystatechange = (() => stateChangeHandler(http));
-    http.send(data);
-}
-
-function getData(target, stateChangeHandler) {
-    var http = new XMLHttpRequest();
-
-	const isAsync = true;
-	var url = "http://10.160.50.176:3000" + target;
-    http.open("GET", url, isAsync);
-
-    http.setRequestHeader("Content-type", "application/json");
-    http.onreadystatechange = (() => stateChangeHandler(http));
-    http.send();
-}

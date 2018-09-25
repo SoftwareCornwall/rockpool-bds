@@ -2,12 +2,20 @@
 
 var speciesList = [];
 
+
+function getData(target, loadHandler) {
+    var http = new XMLHttpRequest();
+	var url = "http://10.160.50.176:3000" + target;
+    const isAsync = true;
+    http.open("GET", url, isAsync);
+
+    http.setRequestHeader("Content-type", "application/json");
+	http.addEventListener("load", () => loadHandler(http.responseText));
+    http.send();
+}
+
 function handleSpeciesListDownload(result) {
-	if ((result.readyState != 4) || (result.status != 200)) {
-		return;
-	}
-	
-    speciesList = JSON.parse(result.responseText);
+    speciesList = JSON.parse(result);
     var list = document.getElementById("species-list-select");
 
     for (var i = 0; i < speciesList.length; i++) {
@@ -37,39 +45,42 @@ function isAlphanumeric(phrase) {
 function findInvalidField(sessionId, touristIds) {
     var isSessionIdValid = ((sessionId.length == 5) && isAlphanumeric(sessionId));
     if (!isSessionIdValid) {
-        return "Session ID must be 5 letters or numbers.";
+        return "sessionId";
     }
 
     const maxTouristCount = 3;
     var isValidTouristCount = ((touristIds.length > 0) && (touristIds.length <= maxTouristCount));
     if (!isValidTouristCount)
-        return "There must be between 1 and 3 tourist IDs.";
+        return "touristIds";
 
 
     for (var i = 0; i < touristIds.length; i++) {
         var isValid = ((touristIds[i].length == 5) && isAlphanumeric(touristIds[i]));
-        if (!isValid) return "Tourist IDs must be 5 letters or numbers.";
+        if (!isValid) return "touristIds";
     }
 
-    return "";
+    return "none";
 }
 
-function footerButton_click() {
-    var sessionId = document.getElementById("session-id-input").value.toLowerCase();
+function continueButton_click() {
+    var sessionId = document.getElementById("session-id-input").value;
     var speciesListId = document.getElementById("species-list-select").value;
 
     var touristIds = [];
     const noOfTourists = 3;
     for (let i = 0; i < noOfTourists; i++) {
-        var tourist = document.getElementById("tourist-input-" + i).value.toLowerCase();
+        var tourist = document.getElementById("tourist-input-" + i).value;
         if (tourist != "")
             touristIds.push(tourist);
     }
 
     var invalidField = findInvalidField(sessionId, touristIds);
 
-    if (invalidField != "") {
-        alert(invalidField);
+    if (invalidField == "sessionId") {
+        alert("Invalid Session ID");
+        return;
+    } else if (invalidField == "touristIds") {
+        alert("Invalid Tourist IDs");
         return;
     }
 
@@ -84,7 +95,7 @@ function footerButton_click() {
 function initialise() {
     const speciesListsURL = "/api/getSpeciesLists";
     getData(speciesListsURL, (result) => handleSpeciesListDownload(result));
-    document.getElementById("footer-button").addEventListener("click", footerButton_click);
+    document.getElementById("continue-button").addEventListener("click", continueButton_click);
 }
 
 //window.onload = initialise;
